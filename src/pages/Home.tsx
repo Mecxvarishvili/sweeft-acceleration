@@ -1,36 +1,32 @@
-import getImages from "../api/getImages";
 import SearchBar from "../components/SearchBar";
 import { useEffect, useState } from "react"
-import { Image } from "../types/image";
+import useImages from "../hook/useImages";
 
 export default function Home () {
     const [ inputValue, setInputValue ] = useState<string>('')
-    const [ images, setImages ] = useState<Image[]>()
+    const [ page, setPage ] = useState<number>(1)
+    const [ query, setQuery ] = useState<string>('')
+
+    const { isLoading, hasNextPage, data } = useImages(query, page)
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await getImages()
-                setImages(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchData()
-    }, [])
-
-    useEffect(() => {
-        if(inputValue !== '') {
             const timeoutId = setTimeout(() => {
-                console.log("fetch data")
+                setQuery(inputValue)
+                setPage((currPage) => (currPage + 1))
+                console.log("event run")
             }, 1000)
             return () => clearTimeout(timeoutId)
-        }
     }, [inputValue])
 
     return (
         <main>
             <SearchBar handleChange={setInputValue} />
+            {data && data.map(datum => {
+                return(
+                    <div>datu</div>
+                )
+            })}
+            {isLoading && <div>loading...</div>}
         </main>
     )
 }

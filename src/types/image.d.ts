@@ -1,4 +1,4 @@
-export type Image = {
+type Image = {
   id: string;
   slug: string;
   created_at: string;
@@ -113,3 +113,6 @@ export type Image = {
     };
   };
 };
+
+
+export default Images
