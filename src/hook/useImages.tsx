@@ -1,26 +1,33 @@
 import { useEffect, useState }from 'react';
 import getImages from '../api/getImages';
 import Image from '../types/image';
+import { useQuery } from 'react-query';
 
 const useImages = ( query: string, page: number ) => {
-    const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ hasNextPage, setHasNextPage ] = useState<boolean>(true)
-    const [ data, setData ] = useState<Image[]>([])
+    const [ allData, setAllData ] = useState<Image[]>([])
 
     useEffect(() => {
-        setIsLoading(true)
-        getImages()
-            .then(res => {
-                setData((currData) => {return [...currData, ...res]})
-                setIsLoading(false)
-                if(res.length > 0) setHasNextPage(true)
-            })
-            .catch(e =>{
-                return
-            })
-    }, [page, query])
+        setAllData([])
+    }, [query])
 
-    return { isLoading, hasNextPage, data}
+    const { data, isLoading, error } = useQuery(
+        [query, page], 
+        async () => {
+            const response = await getImages(query, page)
+            setHasNextPage(response.docs.length > 0)
+            return response.docs
+        }, 
+        {
+            enabled: true,
+            refetchOnWindowFocus: false,
+            onSuccess: (newData) => {setAllData((currState) => [...currState, ...newData]); }
+        }
+    )
+
+    console.log(error)
+
+    return { isLoading, hasNextPage, allData}
 }
 
 export default useImages

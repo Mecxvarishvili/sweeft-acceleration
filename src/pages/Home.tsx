@@ -1,32 +1,29 @@
 import SearchBar from "../components/SearchBar";
 import { useEffect, useState } from "react"
 import useImages from "../hook/useImages";
+import InfiniteScroll from "../components/InfiniteScroll";
 
 export default function Home () {
-    const [ inputValue, setInputValue ] = useState<string>('')
+    const [ inputValue, setInputValue ] = useState<string>()
     const [ page, setPage ] = useState<number>(1)
     const [ query, setQuery ] = useState<string>('')
 
-    const { isLoading, hasNextPage, data } = useImages(query, page)
+    const { isLoading, allData, hasNextPage } = useImages(query, page)
 
     useEffect(() => {
+        if(inputValue !== undefined) {
             const timeoutId = setTimeout(() => {
                 setQuery(inputValue)
-                setPage((currPage) => (currPage + 1))
-                console.log("event run")
+                setPage(1)
             }, 1000)
             return () => clearTimeout(timeoutId)
+        }
     }, [inputValue])
 
     return (
         <main>
             <SearchBar handleChange={setInputValue} />
-            {data && data.map(datum => {
-                return(
-                    <div>datu</div>
-                )
-            })}
-            {isLoading && <div>loading...</div>}
+            <InfiniteScroll isLoading={isLoading} data={allData} hasNextPage={hasNextPage} setPage={setPage} />
         </main>
     )
 }
