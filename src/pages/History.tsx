@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import useImages from "../hook/useImages"
 import InfiniteScroll from "../components/InfiniteScroll"
 
@@ -17,7 +17,7 @@ export default function History () {
             <div>
                 <div>last history:</div>
                 {history.map((e) => (
-                    <div onClick={() => setQuery(e)}>{e}</div>
+                    <div onClick={() => {setQuery(e); setPage(1)}}>{e}</div>
                 ))}
             </div>
             <div>

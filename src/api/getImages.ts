@@ -1,5 +1,5 @@
-export default async function getImages (query: string, page: number) {
-    const res = await fetch(`https://openlibrary.org/search.json?q=${query}&page=${page}`)
+export default async function getImages (query: string, page: number, signal: AbortSignal) {
+    const res = await fetch(`https://openlibrary.org/search.json?q=${query}&page=${page}`, { signal })
     return res.json()
 }
 

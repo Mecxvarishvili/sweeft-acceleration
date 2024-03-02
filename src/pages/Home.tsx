@@ -2,6 +2,7 @@ import SearchBar from "../components/SearchBar";
 import { useEffect, useState } from "react"
 import useImages from "../hook/useImages";
 import InfiniteScroll from "../components/InfiniteScroll";
+import { Link } from "react-router-dom";
 
 export default function Home () {
     const [ inputValue, setInputValue ] = useState<string>()
