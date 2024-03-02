@@ -115,4 +115,4 @@ type Image = {
 };
 
 
-export default Images
+export default Image

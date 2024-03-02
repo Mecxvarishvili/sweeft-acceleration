@@ -4,7 +4,7 @@ import Image from '../types/image';
 import { useQuery } from 'react-query';
 
 const useImages = ( query: string, page: number ) => {
-    const [ allData, setAllData ] = useState<Image[]>([])
+    const [ allData, setAllData ] = useState<any[]>([])
     const controllerRef = useRef<AbortController>()
     const [ hasNextPage, setHasNextPage ] = useState<boolean>(true)
 

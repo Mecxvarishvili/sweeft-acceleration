@@ -1,15 +1,18 @@
-import { useRef, useCallback } from "react"
-import Images from "../types/image"
+import { useRef, useCallback, useState } from "react"
+import Image from "../types/image"
+import ImageCard from "./ImageCard"
+import ImageModal from "./ImageModal"
 
 type Props = {
     isLoading: boolean,
-    data: Images[]
+    data: Image[]
     hasNextPage: boolean
     setPage: Function,
 }
 
 
 function InfiniteScroll ({ isLoading, data, hasNextPage, setPage}: Props) {
+    const [ modal, setModal ] = useState<Image | undefined>()
     const observer = useRef<IntersectionObserver>()
 
     const lastImageElementRef = useCallback((image: HTMLDivElement) => {
@@ -23,17 +26,21 @@ function InfiniteScroll ({ isLoading, data, hasNextPage, setPage}: Props) {
         })
         if(image)  observer.current.observe(image)
 
-    }, [isLoading, hasNextPage])
+    }, [/*isLoading, hasNextPage*/])
 
    return (
-    <div>
-        {data && data.map((datum, i) => {
-            if(data.length === i + 1) {
-                return (<div ref={lastImageElementRef}>{datum.title}</div>)
-            }
-            return (<div>{datum.title}</div>)
-        })}
+    <div className="infinite-scroll" >
+        <div className="images-container" >
+        {
+            data && data.map((image, i) => 
+            data.length === i + 1 ?
+            <ImageCard imageRef={lastImageElementRef} key={image.id} data={image} setModal={setModal}/> : 
+            <ImageCard key={image.id} data={image} setModal={setModal}/>)
+        }
+        </div>
         { isLoading && <div>loading...</div> }
+        {modal && <ImageModal data={modal} setModal={setModal}/>}
+        
     </div>
     )
 }

@@ -1,3 +1,5 @@
+import styles from '../styles/searchBar.module.css'
+
 type Props = {
     handleChange: Function
 }
@@ -5,8 +7,8 @@ type Props = {
 export default function SearchBar ({handleChange}: Props) {
 
     return (
-        <header>
-            <input type='searc' id="search" onChange={(e) =>handleChange(e.target.value)} />
+        <header className='search-bar'>
+            <input className='search-input' type='search' placeholder="Serach Image"  id="search" onChange={(e) =>handleChange(e.target.value)} />
         </header>
     )
 }
