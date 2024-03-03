@@ -116,3 +116,13 @@ type Image = {
 
 
 export default Image
+
+
+export type SingleImage = {
+  urls: {
+    regular: string
+  }
+  likes: number,
+  views: number,
+  downloads: number
+}

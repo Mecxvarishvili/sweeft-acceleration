@@ -2,17 +2,17 @@ import { useRef, useCallback, useState } from "react"
 import Image from "../types/image"
 import ImageCard from "./ImageCard"
 import ImageModal from "./ImageModal"
+import SkeletonLoader from "./SkeletonLoader"
 
 type Props = {
     isLoading: boolean,
-    data: Image[]
-    hasNextPage: boolean
+    data: Image[],
+    hasNextPage: boolean,
     setPage: Function,
 }
 
-
 function InfiniteScroll ({ isLoading, data, hasNextPage, setPage}: Props) {
-    const [ modal, setModal ] = useState<Image | undefined>()
+    const [ imageId, setImageId ] = useState<string>()
     const observer = useRef<IntersectionObserver>()
 
     const lastImageElementRef = useCallback((image: HTMLDivElement) => {
@@ -26,20 +26,21 @@ function InfiniteScroll ({ isLoading, data, hasNextPage, setPage}: Props) {
         })
         if(image)  observer.current.observe(image)
 
-    }, [/*isLoading, hasNextPage*/])
+    }, [isLoading, hasNextPage])
 
    return (
     <div className="infinite-scroll" >
         <div className="images-container" >
         {
-            data && data.map((image, i) => 
+            data.length ? data.map((image, i) => 
             data.length === i + 1 ?
-            <ImageCard imageRef={lastImageElementRef} key={image.id} data={image} setModal={setModal}/> : 
-            <ImageCard key={image.id} data={image} setModal={setModal}/>)
+            <ImageCard imageRef={lastImageElementRef} key={image.id} data={image} setModal={setImageId}/> : 
+            <ImageCard key={image.id} data={image} setModal={setImageId}/>)
+            : !isLoading && <div className="not-found" >Result not found</div>
         }
+        { isLoading && <SkeletonLoader />}
         </div>
-        { isLoading && <div>loading...</div> }
-        {modal && <ImageModal data={modal} setModal={setModal}/>}
+        {imageId && <ImageModal id={imageId} setModal={setImageId}/>}
         
     </div>
     )
