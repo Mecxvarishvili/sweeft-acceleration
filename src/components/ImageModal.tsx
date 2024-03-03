@@ -20,36 +20,42 @@ export default function ImageModal({id, setModal}: Props) {
         })
     }, [])
 
+    function handleClose () {
+        setModal()
+    }
+
     //create error catch
 
   return (
-    <div className="modal-block" onClick={() => setModal()} >
+    <div className="modal-block" onClick={handleClose} >
         <div className="modal-container" onClick={(e) =>e.stopPropagation()} >
             <div>
-                <div className="exit-arrow"  onClick={() => setModal()} >&#x2715;</div>
+                <div className="exit-arrow"  onClick={handleClose} >&#x2715;</div>
             </div>
             {
                 data ? 
-                <div>
+                <>
                     <img className='modal-image' src={data.urls.regular} alt="" />
                     <div className='about-cont' >
-                        <div>
+                        <div className="about-box" >
                             <BiSolidLike className='svg-icon' />
                             <span>{data.likes}</span>
                         </div>
         
-                        <div>
+                        <div className="about-box">
                             <GrView className='svg-icon' />
                             <span>{data.views}</span>
                         </div>
         
-                        <div>
+                        <div className="about-box">
                             <TbDownload className='svg-icon' />
                             <span>{data.downloads}</span>
                         </div>
                     </div>
-                </div> :
-                <div>loading...</div>
+                </> :
+                <div className="card is-loading image-card-cont">
+                    <div className="image"></div>
+                </div>
             }
         </div>
     </div>

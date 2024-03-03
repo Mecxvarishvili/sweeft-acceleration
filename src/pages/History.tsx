@@ -13,25 +13,24 @@ export default function History () {
 
 
     return (
-        <div className="main" >
+        <div className="block" >
             <div className="header" > 
                 <div className="title">History Page</div>
                 <Link className="link" to="/">Home </Link>
             </div>
             {history.length ?
-                <div>
+                <div className="history-main" >
+                    <div className="select-history" >Select history:</div>
                     <div className="history-result-cont" >
                     {history.map((e) => (
-                        <div key={e} className="history-query" onClick={() => {setSearch(e); setPage(1)}}>{e}</div>
+                        <div key={e} className="history-search" onClick={() => {setSearch(e); setPage(1)}}>{e}</div>
                     ))}
                     </div>
                     <div>
-                        {search.length ? 
-                        <InfiniteScroll isLoading={isLoading} data={allData} hasNextPage={hasNextPage} setPage={setPage} /> :
-                        <div>select some history</div>}
+                        {!!search.length && <InfiniteScroll isLoading={isLoading} data={allData} hasNextPage={hasNextPage} setPage={setPage} />}
                     </div>
                 </div>:
-                <div className="history-title">There is nothing in history yet</div>
+                <div className="history-nothing">There is nothing in history yet</div>
             }
         </div>
     )

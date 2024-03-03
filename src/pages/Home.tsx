@@ -27,12 +27,11 @@ export default function Home () {
     useEffect(() => {
         if (search !== '' && data && !!data.length &&  !history.some(e => e === inputValue)) {
             setHistory((currHistory: string[]) => [...currHistory, inputValue])
-            console.log('use')
         }
     }, [data])
 
     return (
-        <main className='main'>
+        <main className='block'>
             <div className="header" >
                 <div className="title" >Photo Gallery</div>
                 <Link className="link" to="/history">History</Link>
